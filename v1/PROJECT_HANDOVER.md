@@ -80,11 +80,25 @@ Connections/
   - Keeps the remaining hints hidden so players aren't spoiled.
   - Clean, minimal, zero extra clutter.
 
-### F. Persistence & Statistics
-- Game state per puzzle is saved in `localStorage`: `dhruva_connections_save_<id>`
-- Overall stats (played, win %, streaks, guess distribution) saved in `localStorage`: `dhruva_connections_stats`
+### F. Persistence & Statistics (`constellations:stats:v1`)
+- **Key**: `constellations:stats:v1` in `localStorage`.
+- **Metrics Tracked**:
+  - `gamesPlayed`: Total completed games.
+  - `gamesWon`: Total games won.
+  - `currentStreak`: Consecutive winning games (increments on win, resets to 0 on loss).
+  - `maxStreak`: Highest consecutive winning streak ever achieved.
+  - `mistakeDistribution`: Map of wins by mistake count (`0`, `1`, `2`, `3`).
+- **Empty State**: Renders `"You Have Not Won Yet"` in the distribution area when `gamesWon === 0`.
+- **Resilience**: Safe `try...catch` handling for private browsing modes and quota restrictions with corrupted data recovery.
+- **Duplicate Prevention**: Prevents counting duplicate wins/losses when re-opening or refreshing the current puzzle.
 
-### G. View Full Vertical Photo Feature (`index.html`, `styles.css`, `app.js`)
+### G. Mobile & Touch Screen Optimization
+- Responsive 4×4 tile grid scaling dynamically down to small devices (320px–430px) without horizontal clipping.
+- Minimum 44px–48px touch targets for buttons and tiles with `-webkit-tap-highlight-color: transparent`.
+- iOS Safe Area Insets: Supports notches, dynamic islands, and home indicators with `env(safe-area-inset-top)` and `env(safe-area-inset-bottom)`.
+- Scrollable modal containers with fixed header actions for Statistics, Archive, Hints, and How to Play.
+
+### H. View Full Vertical Photo Feature (`index.html`, `styles.css`, `app.js`)
 - Floating glassmorphic pill button positioned in the bottom-right corner (`🖼 View Picture`).
 - When clicked, opens a dedicated full-screen scrollable photo viewer modal (`#photo-viewer-modal`) displaying the **original, uncropped vertical photograph** (`assets/dhruva_observatory_full.jpg`).
 - Players can smoothly scroll vertically through the entire image from the starry night sky at the top down to the horizon.
