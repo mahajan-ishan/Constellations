@@ -902,6 +902,9 @@ header {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .dist-row {
@@ -910,15 +913,27 @@ header {
   gap: 8px;
   font-size: 0.82rem;
   font-family: var(--font-mono);
+  width: 100%;
+  min-width: 0;
+}
+
+.dist-num {
+  font-size: 0.82rem;
+  font-weight: 700;
+  width: 14px;
+  text-align: center;
+  color: var(--text-secondary);
+  flex-shrink: 0;
 }
 
 .dist-bar-wrap {
   flex: 1;
   background: rgba(255, 255, 255, 0.06);
   border-radius: 4px;
-  height: 20px;
+  height: 22px;
   display: flex;
   overflow: hidden;
+  min-width: 0;
 }
 
 .dist-bar {
@@ -932,6 +947,33 @@ header {
   font-size: 0.75rem;
   color: #042f4c;
   min-width: 20px;
+  max-width: 100%;
+  box-sizing: border-box;
+  border-radius: 3px;
+  transition: width 0.35s ease;
+}
+
+.dist-row.highlight .dist-bar {
+  background: linear-gradient(90deg, #38bdf8 0%, #818cf8 100%);
+  color: #031326;
+  font-weight: 800;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+}
+
+.dist-row.highlight .dist-num {
+  color: var(--color-cyan);
+}
+
+.empty-stats-msg {
+  text-align: center;
+  padding: 24px 14px;
+  font-family: var(--font-mono);
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
 }
 
 /* Archive List */
@@ -1667,6 +1709,16 @@ body {
 
   .stat-label {
     font-size: 0.62rem;
+  }
+
+  .dist-row {
+    gap: 6px;
+  }
+
+  .dist-bar {
+    padding: 0 6px;
+    font-size: 0.7rem;
+    min-width: 18px;
   }
 
   /* Game Over Modal actions */

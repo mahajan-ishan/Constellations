@@ -111,11 +111,12 @@
   const LEVEL_EMOJIS = ['🟨', '🟩', '🟦', '🟪'];
   const LEVEL_NAMES = ['Straightforward', 'Moderate', 'Challenging', 'Tricky / Wordplay'];
 
+  const MAX_MISTAKES = 4;
   let currentPuzzle = null;
   let remainingTiles = [];      // Array of uppercase word strings
   let selectedWords = [];       // Array of selected word strings (max 4)
   let solvedCategories = [];    // Array of solved category objects
-  let mistakesRemaining = 4;
+  let mistakesRemaining = MAX_MISTAKES;
   let guessHistory = [];        // Array of arrays: each guess is an array of 4 words
   let emojiHistory = [];        // Array of 4-emoji strings for share
   let gameStatus = 'playing';   // 'playing', 'won', 'lost'
@@ -157,8 +158,11 @@
      ============================================================== */
   function initGame(puzzleId = null) {
     if (puzzleId) {
-      // Guard: don't allow playing locked puzzles
-      if (!isPuzzleUnlocked(puzzleId)) {
+      // Guard: don't allow playing locked puzzles.
+      // Pre-launch, getPuzzleForDate() still serves puzzle 1 as a preview.
+      const previewPuzzle = getPuzzleForDate();
+      const isPreview = previewPuzzle && previewPuzzle.id === puzzleId;
+      if (!isPuzzleUnlocked(puzzleId) && !isPreview) {
         showToast('🔒 This puzzle unlocks on Sunday 00:00 IST!');
         return;
       }
@@ -184,7 +188,7 @@
         .filter(w => !solvedWords.has(w.toUpperCase()));
 
       selectedWords = [];
-      mistakesRemaining = saved.mistakesRemaining !== undefined ? saved.mistakesRemaining : 4;
+      mistakesRemaining = saved.mistakesRemaining !== undefined ? saved.mistakesRemaining : MAX_MISTAKES;
       guessHistory = saved.guessHistory || [];
       emojiHistory = saved.emojiHistory || [];
       gameStatus = saved.gameStatus || 'playing';
@@ -200,7 +204,7 @@
       remainingTiles = shuffleArray([...allWords]);
       selectedWords = [];
       solvedCategories = [];
-      mistakesRemaining = 4;
+      mistakesRemaining = MAX_MISTAKES;
       guessHistory = [];
       emojiHistory = [];
       gameStatus = 'playing';
@@ -580,14 +584,24 @@
 
   // Quick debug/helper accessible in console if needed
   window.resetConnections = function(all = false) {
-    if (all) {
-      Object.keys(localStorage)
-        .filter(k => k.startsWith('dhruva_connections_'))
-        .forEach(k => localStorage.removeItem(k));
-      showToast('All puzzles & stats reset!');
-    } else {
-      localStorage.removeItem(`dhruva_connections_save_${currentPuzzle.id}`);
-      showToast('Current puzzle reset!');
+    try {
+      if (all) {
+        Object.keys(localStorage)
+          .filter(k => k.startsWith('dhruva_connections_') || k === STATS_KEY)
+          .forEach(k => localStorage.removeItem(k));
+        inMemoryStats = getDefaultStats();
+        renderStats();
+        showToast('All puzzles & stats reset!');
+      } else {
+        localStorage.removeItem(`dhruva_connections_save_${currentPuzzle.id}`);
+        showToast('Current puzzle reset!');
+      }
+    } catch (e) {
+      console.warn('Could not reset saved data:', e);
+      if (all) {
+        inMemoryStats = getDefaultStats();
+        renderStats();
+      }
     }
     initGame(currentPuzzle.id);
   };
@@ -692,6 +706,7 @@
       catContainer.appendChild(card);
     });
 
+    renderStats();
     openModal('game-over-modal');
   }
 
@@ -726,67 +741,218 @@
   /* ==============================================================
      8. STATS & ARCHIVE IMPLEMENTATION
      ============================================================== */
-  const STATS_KEY = 'dhruva_connections_stats';
+  const STATS_KEY = 'constellations:stats:v1';
+  let inMemoryStats = null;
 
-  function getStats() {
-    try {
-      return JSON.parse(localStorage.getItem(STATS_KEY)) || {
-        played: 0,
-        won: 0,
-        currentStreak: 0,
-        maxStreak: 0,
-        distribution: { 4: 0, 5: 0, 6: 0, 7: 0 } // guesses needed to win
-      };
-    } catch (e) {
-      return { played: 0, won: 0, currentStreak: 0, maxStreak: 0, distribution: { 4: 0, 5: 0, 6: 0, 7: 0 } };
+  function emptyMistakeDistribution() {
+    const dist = {};
+    for (let i = 0; i < MAX_MISTAKES; i++) {
+      dist[String(i)] = 0;
     }
+    return dist;
   }
 
-  function recordGameStats(isWin) {
-    const stats = getStats();
-    stats.played++;
-    if (isWin) {
-      stats.won++;
-      stats.currentStreak++;
-      if (stats.currentStreak > stats.maxStreak) {
+  function getDefaultStats() {
+    return {
+      version: 1,
+      gamesPlayed: 0,
+      gamesWon: 0,
+      currentStreak: 0,
+      maxStreak: 0,
+      mistakeDistribution: emptyMistakeDistribution(),
+      lastPlayedPuzzle: null,
+      lastWonPuzzle: null,
+      lastResult: null,
+      recordedPuzzles: []
+    };
+  }
+
+  function samePuzzleId(a, b) {
+    if (a === null || a === undefined || b === null || b === undefined) return false;
+    return String(a) === String(b);
+  }
+
+  function nonNegInt(value, fallback) {
+    return Number.isInteger(value) && value >= 0 ? value : fallback;
+  }
+
+  function normalizeLastResult(value) {
+    if (!value || typeof value !== 'object') return null;
+    if (value.puzzle === undefined || value.puzzle === null) return null;
+    if (typeof value.won !== 'boolean') return null;
+    if (!Number.isInteger(value.mistakes) || value.mistakes < 0) return null;
+    return {
+      puzzle: value.puzzle,
+      won: value.won,
+      mistakes: value.mistakes
+    };
+  }
+
+  function loadStats() {
+    const defaults = getDefaultStats();
+    try {
+      const raw = localStorage.getItem(STATS_KEY);
+      if (!raw) {
+        return inMemoryStats || defaults;
+      }
+      let parsed;
+      try {
+        parsed = JSON.parse(raw);
+      } catch (parseErr) {
+        console.warn('Corrupted stats JSON in localStorage, resetting to defaults:', parseErr);
+        inMemoryStats = defaults;
+        return defaults;
+      }
+      if (!parsed || typeof parsed !== 'object') {
+        inMemoryStats = defaults;
+        return defaults;
+      }
+
+      const stats = {
+        version: 1,
+        gamesPlayed: nonNegInt(parsed.gamesPlayed, 0),
+        gamesWon: nonNegInt(parsed.gamesWon, 0),
+        currentStreak: nonNegInt(parsed.currentStreak, 0),
+        maxStreak: nonNegInt(parsed.maxStreak, 0),
+        mistakeDistribution: emptyMistakeDistribution(),
+        lastPlayedPuzzle: parsed.lastPlayedPuzzle !== undefined ? parsed.lastPlayedPuzzle : null,
+        lastWonPuzzle: parsed.lastWonPuzzle !== undefined ? parsed.lastWonPuzzle : null,
+        lastResult: normalizeLastResult(parsed.lastResult),
+        recordedPuzzles: Array.isArray(parsed.recordedPuzzles)
+          ? parsed.recordedPuzzles.filter(id => id !== undefined && id !== null)
+          : []
+      };
+
+      if (stats.lastPlayedPuzzle !== null && !stats.recordedPuzzles.some(id => samePuzzleId(id, stats.lastPlayedPuzzle))) {
+        stats.recordedPuzzles.push(stats.lastPlayedPuzzle);
+      }
+
+      if (parsed.mistakeDistribution && typeof parsed.mistakeDistribution === 'object') {
+        Object.keys(stats.mistakeDistribution).forEach(k => {
+          stats.mistakeDistribution[k] = nonNegInt(parsed.mistakeDistribution[k], 0);
+        });
+      }
+
+      if (stats.gamesWon > stats.gamesPlayed) {
+        stats.gamesPlayed = stats.gamesWon;
+      }
+      if (stats.maxStreak < stats.currentStreak) {
         stats.maxStreak = stats.currentStreak;
       }
-      const guesses = guessHistory.length;
-      if (stats.distribution[guesses] !== undefined) {
-        stats.distribution[guesses]++;
-      }
-    } else {
-      stats.currentStreak = 0;
+
+      inMemoryStats = stats;
+      return stats;
+    } catch (e) {
+      console.warn('Could not read stats from localStorage:', e);
+      return inMemoryStats || defaults;
     }
-    localStorage.setItem(STATS_KEY, JSON.stringify(stats));
   }
 
-  function renderStatsModal() {
-    const stats = getStats();
-    document.getElementById('stat-played').textContent = stats.played;
-    const winPct = stats.played > 0 ? Math.round((stats.won / stats.played) * 100) : 0;
-    document.getElementById('stat-win-pct').textContent = `${winPct}%`;
-    document.getElementById('stat-streak').textContent = stats.currentStreak;
-    document.getElementById('stat-max-streak').textContent = stats.maxStreak;
+  function saveStats(stats) {
+    inMemoryStats = stats;
+    try {
+      localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+    } catch (e) {
+      console.warn('Could not save stats to localStorage:', e);
+    }
+  }
+
+  function recordGameResult(isWin) {
+    try {
+      if (!currentPuzzle) return;
+      const stats = loadStats();
+      const puzzleId = currentPuzzle.id;
+
+      // Record exactly once per puzzle (refresh, replay, and reopening the popup must not inflate)
+      const alreadyRecorded = samePuzzleId(stats.lastPlayedPuzzle, puzzleId) ||
+        stats.recordedPuzzles.some(id => samePuzzleId(id, puzzleId));
+      if (alreadyRecorded) {
+        renderStats();
+        return;
+      }
+
+      const mistakesMade = Math.max(0, Math.min(MAX_MISTAKES - 1, MAX_MISTAKES - mistakesRemaining));
+      stats.gamesPlayed += 1;
+
+      if (isWin) {
+        stats.gamesWon += 1;
+        const key = String(mistakesMade);
+        if (stats.mistakeDistribution[key] !== undefined) {
+          stats.mistakeDistribution[key] += 1;
+        }
+        // Archive / weekly catalog: streak is consecutive wins, not calendar days
+        stats.currentStreak += 1;
+        stats.maxStreak = Math.max(stats.maxStreak, stats.currentStreak);
+        stats.lastWonPuzzle = puzzleId;
+        stats.lastPlayedPuzzle = puzzleId;
+        stats.lastResult = { puzzle: puzzleId, won: true, mistakes: mistakesMade };
+        stats.recordedPuzzles.push(puzzleId);
+      } else {
+        stats.currentStreak = 0;
+        stats.lastPlayedPuzzle = puzzleId;
+        stats.lastResult = { puzzle: puzzleId, won: false, mistakes: MAX_MISTAKES };
+        stats.recordedPuzzles.push(puzzleId);
+      }
+
+      saveStats(stats);
+      renderStats();
+    } catch (e) {
+      console.warn('Could not record game result:', e);
+    }
+  }
+
+  const recordGameStats = recordGameResult;
+
+  function renderStats() {
+    const stats = loadStats();
+
+    const playedEl = document.getElementById('stat-played');
+    const winPctEl = document.getElementById('stat-win-pct');
+    const streakEl = document.getElementById('stat-streak');
+    const maxStreakEl = document.getElementById('stat-max-streak');
+
+    if (playedEl) playedEl.textContent = String(stats.gamesPlayed);
+    const winPct = stats.gamesPlayed > 0 ? Math.round((stats.gamesWon / stats.gamesPlayed) * 100) : 0;
+    if (winPctEl) winPctEl.textContent = `${winPct}%`;
+    if (streakEl) streakEl.textContent = String(stats.currentStreak);
+    if (maxStreakEl) maxStreakEl.textContent = String(stats.maxStreak);
 
     const distContainer = document.getElementById('guess-distribution');
-    distContainer.innerHTML = '';
-    const maxVal = Math.max(1, ...Object.values(stats.distribution));
+    if (!distContainer) return;
 
-    [4, 5, 6, 7].forEach(num => {
-      const count = stats.distribution[num] || 0;
-      const pct = Math.max(7, Math.round((count / maxVal) * 100));
+    if (stats.gamesWon === 0) {
+      distContainer.innerHTML = '<div class="empty-stats-msg">You Have Not Won Yet</div>';
+      return;
+    }
+
+    distContainer.innerHTML = '';
+    const counts = Object.values(stats.mistakeDistribution);
+    const maxCount = Math.max(1, ...counts);
+    const distKeys = Object.keys(stats.mistakeDistribution);
+
+    distKeys.forEach(numStr => {
+      const num = parseInt(numStr, 10);
+      const count = stats.mistakeDistribution[numStr] || 0;
+      const pct = count === 0 ? 0 : Math.round((count / maxCount) * 100);
+      const isRecent = Boolean(
+        stats.lastResult &&
+        stats.lastResult.won &&
+        stats.lastResult.mistakes === num
+      );
+
       const row = document.createElement('div');
-      row.className = 'dist-row';
+      row.className = isRecent ? 'dist-row highlight' : 'dist-row';
       row.innerHTML = `
-        <span>${num}</span>
+        <span class="dist-num">${num}</span>
         <div class="dist-bar-wrap">
-          <div class="dist-bar" style="width: ${pct}%">${count}</div>
+          <div class="dist-bar" style="width: ${pct}%" aria-label="${count} win${count === 1 ? '' : 's'} with ${num} mistake${num === 1 ? '' : 's'}">${count}</div>
         </div>
       `;
       distContainer.appendChild(row);
     });
   }
+
+  const renderStatsModal = renderStats;
 
   function renderArchiveModal() {
     const list = document.getElementById('archive-list');
@@ -931,6 +1097,7 @@
     setupModals();
     setupPhotoView();
     setupWeeklyCountdownTimer();
+    renderStats();
     initGame();
   });
 
