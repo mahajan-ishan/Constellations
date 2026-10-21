@@ -270,6 +270,10 @@ header {
   display: none;
 }
 
+.mobile-community-bar {
+  display: none;
+}
+
 /* ============================================================
    MAIN CONTAINER
    ============================================================ */
@@ -1500,29 +1504,56 @@ body {
   }
 }
 
-/* SMARTPHONES (max-width: 520px) */
-@media (max-width: 520px) {
+/* SMARTPHONES & COMPACT SCREENS (max-width: 640px) */
+@media (max-width: 640px) {
   :root {
     --header-height: 58px;
   }
 
   header {
-    padding: 0 max(8px, env(safe-area-inset-left, 8px));
+    padding: 0 max(12px, env(safe-area-inset-left, 12px));
+    justify-content: space-between;
   }
 
-  .header-left, .header-right {
-    gap: 6px;
+  /* Move community links down to mobile bar */
+  #dhruva-logo-link,
+  header .game-link {
+    display: none !important;
   }
 
-  .header-icon-btn {
-    min-width: 38px;
-    min-height: 38px;
-    padding: 6px;
+  .header-left {
+    flex: 0 0 auto;
+    gap: 8px;
+  }
+
+  .header-right {
+    flex: 0 0 auto;
+    gap: 8px;
+    justify-content: flex-end;
+  }
+
+  .header-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+    padding: 0 8px;
   }
 
   #game-title {
     font-size: clamp(0.95rem, 3.8vw, 1.25rem);
     letter-spacing: 0.08em;
+    white-space: nowrap;
+    text-align: center;
+    margin: 0;
+  }
+
+  .header-icon-btn {
+    min-width: 38px;
+    min-height: 38px;
+    padding: 7px;
+    border-radius: 8px;
   }
 
   .hint-pill-btn span {
@@ -1530,31 +1561,89 @@ body {
   }
 
   .hint-pill-btn {
-    padding: 6px;
+    padding: 7px;
     border-radius: 8px;
-  }
-
-  #dhruva-logo {
-    width: 30px;
-    height: 30px;
-  }
-
-  .game-link {
-    padding: 5px 9px;
-    margin-left: 2px;
-    font-size: 0.74rem;
-  }
-
-  .stardle-full-text {
-    display: none;
-  }
-
-  .stardle-short-text {
-    display: inline;
   }
 
   #game-container {
     padding: 12px 10px calc(72px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .game-meta {
+    margin-bottom: 10px;
+  }
+
+  #puzzle-title-display {
+    font-size: 0.88rem;
+  }
+
+  .weekly-timer-badge {
+    margin-top: 4px;
+    padding: 3px 10px;
+    font-size: 0.72rem;
+  }
+
+  /* Mobile Community & Partner Bar */
+  .mobile-community-bar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 18px auto 0;
+    padding: 8px 16px;
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 24px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  }
+
+  .mobile-dhruva-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    transition: color 0.2s ease;
+  }
+
+  .mobile-dhruva-link:hover,
+  .mobile-dhruva-link:active {
+    color: #ffffff;
+  }
+
+  .mobile-dhruva-logo {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .mobile-community-dot {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.8rem;
+  }
+
+  .mobile-game-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    color: var(--color-cyan);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    transition: color 0.2s ease;
+  }
+
+  .mobile-game-link:hover,
+  .mobile-game-link:active {
+    color: #bae6fd;
   }
 
   .game-meta {
@@ -1780,19 +1869,8 @@ body {
   }
 
   #game-title {
-    font-size: 0.90rem;
+    font-size: 0.88rem;
     letter-spacing: 0.05em;
-  }
-
-  #dhruva-logo {
-    width: 26px;
-    height: 26px;
-  }
-
-  .game-link {
-    padding: 3px 6px;
-    font-size: 0.66rem;
-    margin-left: 0;
   }
 
   #game-container {
