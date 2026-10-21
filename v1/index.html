@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Constellations — Dhruva Astronomy Club</title>
-  <meta name="description" content="Group 16 astronomical words into 4 cosmic categories. The astrophysics-themed Connections game from Dhruva Astronomy Club.">
+  <meta name="description"
+    content="Group 16 astronomical words into 4 cosmic categories. The astrophysics-themed Connections game from Dhruva Astronomy Club.">
 
   <!-- Google Fonts: Space Grotesk & Outfit -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
 
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=stats_spacious_v1">
+  <link rel="stylesheet" href="styles.css?v=photo_credits_v1">
 </head>
+
 <body>
 
   <!-- Photo Background Layer -->
@@ -33,17 +38,20 @@
   <header>
     <div class="header-left">
       <button id="how-to-play-btn" class="header-icon-btn" aria-label="How to play" title="How to Play">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="10"/>
-          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
         </svg>
       </button>
       <button id="hint-btn" class="header-icon-btn hint-pill-btn" aria-label="Cosmic hint" title="Cosmic Hint">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 18h6"/>
-          <path d="M10 22h4"/>
-          <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 18h6" />
+          <path d="M10 22h4" />
+          <path
+            d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" />
         </svg>
         <span>Hint</span>
       </button>
@@ -57,30 +65,35 @@
     <!-- Header Right Controls -->
     <div class="header-right">
       <button id="reset-puzzle-btn" class="header-icon-btn" aria-label="Restart puzzle" title="Restart / Reset Puzzle">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-          <path d="M3 3v5h5"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+          <path d="M3 3v5h5" />
         </svg>
       </button>
       <button id="archive-btn" class="header-icon-btn" aria-label="Puzzle archive" title="Puzzle Archive">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/>
-          <line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+          <line x1="16" y1="2" x2="16" y2="6" />
+          <line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" />
         </svg>
       </button>
       <button id="stats-btn" class="header-icon-btn" aria-label="Statistics" title="Stats">
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 20V10"/>
-          <path d="M12 20V4"/>
-          <path d="M6 20v-6"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 20V10" />
+          <path d="M12 20V4" />
+          <path d="M6 20v-6" />
         </svg>
       </button>
-      <a href="https://teamdhruva.com" target="_blank" rel="noopener" id="dhruva-logo-link" aria-label="Dhruva Astronomy Club">
+      <a href="https://teamdhruva.com" target="_blank" rel="noopener" id="dhruva-logo-link"
+        aria-label="Dhruva Astronomy Club">
         <img src="assets/dhruva_logo.jpg" alt="Dhruva Logo" id="dhruva-logo" />
       </a>
-      <a href="https://stardle-seven.vercel.app" class="game-link" target="_blank" rel="noopener" aria-label="Play Stardle">
+      <a href="https://stardle-seven.vercel.app" class="game-link" target="_blank" rel="noopener"
+        aria-label="Play Stardle">
         <span class="stardle-full-text">Play Stardle →</span>
         <span class="stardle-short-text">Stardle →</span>
       </a>
@@ -92,7 +105,8 @@
     <div class="game-meta">
       <div id="puzzle-title-display">Constellations #1</div>
       <div id="weekly-timer-badge" class="weekly-timer-badge" title="New puzzle drops every Sunday at 00:00 IST">
-        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"></circle>
           <polyline points="12 6 12 12 16 14"></polyline>
         </svg>
@@ -123,12 +137,13 @@
     <!-- Action Buttons -->
     <div class="action-buttons">
       <button id="shuffle-btn" class="btn btn-secondary">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="16 3 21 3 21 8"/>
-          <line x1="4" y1="20" x2="21" y2="3"/>
-          <polyline points="21 16 21 21 16 21"/>
-          <line x1="15" y1="15" x2="21" y2="21"/>
-          <line x1="4" y1="4" x2="9" y2="9"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="16 3 21 3 21 8" />
+          <line x1="4" y1="20" x2="21" y2="3" />
+          <polyline points="21 16 21 21 16 21" />
+          <line x1="15" y1="15" x2="21" y2="21" />
+          <line x1="4" y1="4" x2="9" y2="9" />
         </svg>
         <span>Shuffle</span>
       </button>
@@ -138,12 +153,14 @@
 
     <!-- Mobile Community & Partner Links (visible on mobile only) -->
     <div class="mobile-community-bar">
-      <a href="https://teamdhruva.com" target="_blank" rel="noopener" class="mobile-dhruva-link" aria-label="Dhruva Astronomy Club">
+      <a href="https://teamdhruva.com" target="_blank" rel="noopener" class="mobile-dhruva-link"
+        aria-label="Dhruva Astronomy Club">
         <img src="assets/dhruva_logo.jpg" alt="Dhruva Logo" class="mobile-dhruva-logo" />
         <span>Dhruva Astronomy Club</span>
       </a>
       <span class="mobile-community-dot">•</span>
-      <a href="https://stardle-seven.vercel.app" class="mobile-game-link" target="_blank" rel="noopener" aria-label="Play Stardle">
+      <a href="https://stardle-seven.vercel.app" class="mobile-game-link" target="_blank" rel="noopener"
+        aria-label="Play Stardle">
         <span>Play Stardle →</span>
       </a>
     </div>
@@ -151,26 +168,50 @@
 
   <!-- View Background Picture Floating Button & Info Banner -->
   <button id="view-photo-btn" class="view-photo-btn" title="View Background Picture" aria-label="View background photo">
-    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-      <circle cx="8.5" cy="8.5" r="1.5"/>
-      <polyline points="21 15 16 10 5 21"/>
+    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+      <circle cx="8.5" cy="8.5" r="1.5" />
+      <polyline points="21 15 16 10 5 21" />
     </svg>
     <span class="btn-text">View Picture</span>
   </button>
 
   <!-- Full Background Photo Viewer Modal -->
-  <div id="photo-viewer-modal" class="modal-backdrop photo-modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true">
+  <div id="photo-viewer-modal" class="modal-backdrop photo-modal-backdrop" aria-hidden="true" role="dialog"
+    aria-modal="true">
     <div class="photo-viewer-container">
       <div class="photo-viewer-header">
         <div class="photo-viewer-title-group">
-          <span class="photo-scroll-hint">↕ Scroll to explore full vertical photo</span>
+          <div class="photo-viewer-heading">ARIES Observatory, Nainital</div>
+          <span class="photo-scroll-hint">↕ Scroll for photo &amp; credits</span>
         </div>
-        <button class="modal-close-btn photo-viewer-close-btn" data-close="photo-viewer-modal" aria-label="Close photo viewer">✕</button>
+        <button class="modal-close-btn photo-viewer-close-btn" data-close="photo-viewer-modal"
+          aria-label="Close photo viewer">✕</button>
       </div>
       <div class="photo-viewer-body">
         <div class="photo-frame">
-          <img src="assets/dhruva_observatory_full.jpg" alt="Night sky vertical view" class="full-vertical-photo" />
+          <img src="assets/dhruva_observatory_full.jpg" alt="The Milky Way over ARIES Observatory Nainital" class="full-vertical-photo" />
+        </div>
+
+        <!-- Photo Info Card -->
+        <div class="photo-story-card">
+          <div class="photo-info-row">
+            <span class="photo-info-label">Observatory</span>
+            <span class="photo-info-value">Aryabhatta Research Institute of Observational Sciences (ARIES)</span>
+          </div>
+          <div class="photo-info-row">
+            <span class="photo-info-label">Location</span>
+            <span class="photo-info-value">Nainital, Uttarakhand, India</span>
+          </div>
+          <div class="photo-info-row">
+            <span class="photo-info-label">Photo by</span>
+            <span class="photo-info-value highlight">Srujan Kulkarni</span>
+          </div>
+          <div class="photo-info-row">
+            <span class="photo-info-label">Context</span>
+            <span class="photo-info-value muted">First astrophoto — taken at the end of a 2-month internship at ARIES.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -187,14 +228,14 @@
       </div>
       <div class="modal-body">
         <p class="modal-intro">Find groups of four items that share an astronomical or astrophysical connection.</p>
-        
+
         <ul class="rules-list">
           <li>Select four items and tap <strong>'Submit'</strong> to check if your guess is correct.</li>
           <li>Find the groups without making <strong>4 mistakes</strong>!</li>
         </ul>
 
         <div class="category-examples-title">CATEGORY EXAMPLES & DIFFICULTY</div>
-        
+
         <div class="category-pill pill-yellow">
           <div class="pill-badge">🟨 STRAIGHTFORWARD</div>
           <div class="pill-title">GALILEAN MOONS</div>
@@ -219,7 +260,8 @@
           <div class="pill-items">ASTEROID, KUIPER, VAN ALLEN, CONVEYOR</div>
         </div>
 
-        <p class="modal-tip">💡 <strong>Pro Tip:</strong> Watch out for red herrings! Words might look like they belong to multiple categories at first glance.</p>
+        <p class="modal-tip">💡 <strong>Pro Tip:</strong> Watch out for red herrings! Words might look like they belong
+          to multiple categories at first glance.</p>
       </div>
     </div>
   </div>
@@ -315,12 +357,13 @@
 
         <div class="game-over-actions">
           <button id="share-btn" class="btn btn-primary share-btn">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="18" cy="5" r="3"/>
-              <circle cx="6" cy="12" r="3"/>
-              <circle cx="18" cy="19" r="3"/>
-              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3" />
+              <circle cx="6" cy="12" r="3" />
+              <circle cx="18" cy="19" r="3" />
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
             </svg>
             <span>Share Result</span>
           </button>
@@ -334,4 +377,5 @@
   <script src="puzzles.js?v=stats_v2"></script>
   <script src="app.js?v=stats_v2"></script>
 </body>
+
 </html>

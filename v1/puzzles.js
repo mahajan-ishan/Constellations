@@ -27,7 +27,7 @@ const ASTRO_PUZZLES = [
         level: 1,
         name: 'ACTORS IN FAMOUS SPACE MOVIES',
         words: ['RYAN', 'MATT', 'MATTHEW', 'TOM'],
-        description: 'Ryan Gosling (First Man), Matt Damon (The Martian), Matthew McConaughey (Interstellar), and Tom Hanks (Apollo 13) all starred in iconic space films.'
+        description: 'Ryan Gosling (Project Hail Mary), Matt Damon (The Martian), Matthew McConaughey (Interstellar), and Tom Hanks (Apollo 13) all starred in iconic space films.'
       },
       {
         level: 2,
