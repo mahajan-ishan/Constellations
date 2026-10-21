@@ -80,11 +80,13 @@
 html {
   width: 100%;
   height: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   background-color: var(--bg-deep);
   background-image: url('assets/dhruva_observatory_bg.jpg?v=landscape4');
   background-size: cover;
@@ -179,6 +181,7 @@ header {
   justify-content: center;
   gap: 6px;
   transition: all 0.2s ease;
+  touch-action: manipulation;
 }
 
 .header-icon-btn:hover {
@@ -215,6 +218,7 @@ header {
 #dhruva-logo-link {
   display: flex;
   align-items: center;
+  touch-action: manipulation;
 }
 
 #dhruva-logo {
@@ -247,12 +251,17 @@ header {
   text-decoration: none;
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   white-space: nowrap;
+  touch-action: manipulation;
 }
 
 .game-link:hover {
   background: rgba(255, 255, 255, 0.16);
   color: #ffffff;
   border-color: var(--color-cyan);
+}
+
+.stardle-short-text {
+  display: none;
 }
 
 /* ============================================================
@@ -483,11 +492,18 @@ header {
               box-shadow 0.15s ease;
   height: 72px;
   min-height: 56px;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: auto;
+  touch-action: manipulation;
 }
 
-.tile:hover {
-  background: var(--bg-card-hover);
-  border-color: rgba(255, 255, 255, 0.3);
+@media (hover: hover) {
+  .tile:hover {
+    background: var(--bg-card-hover);
+    border-color: rgba(255, 255, 255, 0.3);
+  }
 }
 
 .tile:active {
@@ -513,6 +529,12 @@ header {
 /* Long word auto scaling */
 .tile[data-long="true"] {
   font-size: clamp(0.6rem, 2vw, 0.8rem);
+  line-height: 1.1;
+}
+
+.tile[data-xlong="true"] {
+  font-size: clamp(0.50rem, 1.7vw, 0.68rem);
+  line-height: 1.05;
 }
 
 /* ============================================================
@@ -577,29 +599,34 @@ header {
   gap: 8px;
   transition: all 0.2s ease;
   user-select: none;
+  touch-action: manipulation;
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(15, 23, 42, 0.72);
   color: var(--text-primary);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
-.btn-secondary:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.28);
-  transform: translateY(-1px);
+@media (hover: hover) {
+  .btn-secondary:hover:not(:disabled) {
+    background: rgba(30, 41, 59, 0.85);
+    border-color: rgba(255, 255, 255, 0.35);
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.55);
+    transform: translateY(-1px);
+  }
 }
 
 .btn-primary {
   background: linear-gradient(135deg, #0284c7, #06b6d4);
   color: #ffffff;
   box-shadow: 0 4px 14px rgba(6, 182, 212, 0.35);
-}
-
-.btn-primary:hover:not(:disabled) {
-  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.55);
-  transform: translateY(-1px);
 }
 
 .btn:active:not(:disabled) {
@@ -674,6 +701,7 @@ header {
   width: 100%;
   max-width: 480px;
   max-height: 85vh;
+  max-height: 88dvh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -707,9 +735,15 @@ header {
   color: var(--text-muted);
   font-size: 1.25rem;
   cursor: pointer;
-  padding: 4px 8px;
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
   border-radius: 6px;
   transition: color 0.2s;
+  touch-action: manipulation;
 }
 
 .modal-close-btn:hover {
@@ -1217,8 +1251,8 @@ header {
    ============================================================ */
 .view-photo-btn {
   position: fixed;
-  bottom: 22px;
-  right: 22px;
+  bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+  right: calc(22px + env(safe-area-inset-right, 0px));
   background: rgba(10, 15, 29, 0.78);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -1238,6 +1272,7 @@ header {
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
   transition: all 0.25s ease;
   user-select: none;
+  touch-action: manipulation;
 }
 
 .view-photo-btn:hover {
@@ -1377,26 +1412,63 @@ header {
 }
 
 /* ============================================================
-   MOBILE RESPONSIVENESS
+   RESPONSIVE DESIGN & MOBILE OPTIMIZATIONS
    ============================================================ */
-@media (max-width: 480px) {
-  :root {
-    --header-height: 56px;
+
+/* Touch-action and tap highlight for interactive controls */
+.tile,
+.btn,
+.header-icon-btn,
+.game-link,
+.modal-close-btn,
+.hint-reveal-btn,
+.banner-fact-toggle,
+.view-photo-btn,
+.archive-card {
+  touch-action: manipulation;
+}
+
+/* Base safe area support */
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* TABLET & SMALL LAPTOPS (max-width: 768px) */
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll; /* Eliminates mobile Safari / Chrome stutter */
   }
 
-  .view-photo-btn {
-    bottom: 14px;
-    right: 14px;
-    padding: 6px 11px;
-    font-size: 0.7rem;
+  #game-container {
+    max-width: 520px;
+    padding: 20px 14px calc(70px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* SMARTPHONES (max-width: 520px) */
+@media (max-width: 520px) {
+  :root {
+    --header-height: 58px;
   }
 
   header {
-    padding: 0 10px;
+    padding: 0 max(8px, env(safe-area-inset-left, 8px));
   }
 
   .header-left, .header-right {
     gap: 6px;
+  }
+
+  .header-icon-btn {
+    min-width: 38px;
+    min-height: 38px;
+    padding: 6px;
+  }
+
+  #game-title {
+    font-size: clamp(0.95rem, 3.8vw, 1.25rem);
+    letter-spacing: 0.08em;
   }
 
   .hint-pill-btn span {
@@ -1408,33 +1480,450 @@ header {
     border-radius: 8px;
   }
 
-  #game-container {
-    padding: 12px 8px 30px;
+  #dhruva-logo {
+    width: 30px;
+    height: 30px;
   }
 
+  .game-link {
+    padding: 5px 9px;
+    margin-left: 2px;
+    font-size: 0.74rem;
+  }
+
+  .stardle-full-text {
+    display: none;
+  }
+
+  .stardle-short-text {
+    display: inline;
+  }
+
+  #game-container {
+    padding: 12px 10px calc(72px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .game-meta {
+    margin-bottom: 10px;
+  }
+
+  #puzzle-title-display {
+    font-size: 0.88rem;
+  }
+
+  .weekly-timer-badge {
+    margin-top: 4px;
+    padding: 3px 10px;
+    font-size: 0.72rem;
+  }
+
+  #game-instructions {
+    font-size: 0.84rem;
+    margin-top: 4px;
+  }
+
+  /* 4-column Grid on Mobile */
   #grid-container {
     gap: 6px;
+    margin-bottom: 14px;
   }
 
   .tile {
-    min-height: 50px;
+    height: auto;
+    min-height: 52px;
+    padding: 6px 3px;
+    font-size: clamp(0.70rem, 2.7vw, 0.90rem);
+    line-height: 1.15;
+    border-radius: 7px;
+  }
+
+  .tile[data-long="true"] {
+    font-size: clamp(0.58rem, 2.3vw, 0.74rem);
+    line-height: 1.1;
+  }
+
+  .mistakes-container {
+    margin-bottom: 14px;
+    gap: 8px;
+  }
+
+  .mistakes-label {
+    font-size: 0.82rem;
+  }
+
+  .dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  /* Action Buttons: evenly distributed in 1 row */
+  .action-buttons {
+    gap: 8px;
+  }
+
+  .action-buttons .btn {
+    flex: 1;
+    min-width: 0;
+    min-height: 44px;
+    padding: 10px 8px;
+    font-size: 0.80rem;
+    letter-spacing: 0.01em;
+  }
+
+  .action-buttons .btn svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+  }
+
+  .btn-secondary {
+    background: rgba(15, 23, 42, 0.8);
+    border-color: rgba(255, 255, 255, 0.24);
+  }
+
+  /* Solved Banners on Mobile */
+  .solved-banner {
+    padding: 10px 8px;
+    border-radius: 10px;
+  }
+
+  .banner-category-name {
+    font-size: clamp(0.82rem, 3.2vw, 0.98rem);
+    margin-bottom: 2px;
+  }
+
+  .banner-category-words {
+    font-size: clamp(0.72rem, 2.6vw, 0.84rem);
+  }
+
+  .banner-fact-toggle {
+    min-height: 28px;
+    padding: 4px 10px;
+    font-size: 0.68rem;
+    margin-top: 5px;
+  }
+
+  .banner-fact-text {
+    font-size: 0.76rem;
+    padding: 6px 8px;
+  }
+
+  /* View Photo Button: in-flow centered below game controls on mobile */
+  .view-photo-btn {
+    position: static;
+    margin: 16px auto 20px;
+    display: flex;
+    width: fit-content;
+    padding: 8px 16px;
+    font-size: 0.74rem;
+    background: rgba(10, 15, 29, 0.88);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Modals on Mobile */
+  .modal-backdrop {
+    padding: calc(10px + env(safe-area-inset-top, 0px)) 10px calc(10px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .modal-card {
+    max-height: 88dvh;
+    border-radius: 14px;
+  }
+
+  .modal-header {
+    padding: 14px 16px;
+  }
+
+  .modal-header h2 {
+    font-size: 1.05rem;
+  }
+
+  .modal-close-btn {
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 1.3rem;
+  }
+
+  .modal-body {
+    padding: 14px 14px 20px;
+    font-size: 0.86rem;
+  }
+
+  /* Stats grid on mobile */
+  .stats-row {
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .stat-box {
+    padding: 8px 4px;
+  }
+
+  .stat-num {
+    font-size: 1.25rem;
+  }
+
+  .stat-label {
+    font-size: 0.62rem;
+  }
+
+  /* Game Over Modal actions */
+  .game-over-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .game-over-actions .btn {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .game-over-timer-card {
+    padding: 12px 14px;
+    margin-bottom: 16px;
+  }
+
+  .timer-countdown-digits {
+    font-size: clamp(1.1rem, 4.5vw, 1.4rem);
+  }
+}
+
+/* NARROW PHONES (max-width: 360px, e.g. iPhone SE 1st gen, Galaxy Z Fold outer, 320px screens) */
+@media (max-width: 360px) {
+  :root {
+    --header-height: 52px;
+  }
+
+  header {
+    padding: 0 6px;
+  }
+
+  .header-left, .header-right {
+    gap: 3px;
+  }
+
+  .header-icon-btn {
+    min-width: 34px;
+    min-height: 34px;
+    padding: 5px;
+  }
+
+  .header-icon-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  #game-title {
+    font-size: 0.90rem;
+    letter-spacing: 0.05em;
+  }
+
+  #dhruva-logo {
+    width: 26px;
+    height: 26px;
+  }
+
+  .game-link {
+    padding: 3px 6px;
+    font-size: 0.66rem;
+    margin-left: 0;
+  }
+
+  #game-container {
+    padding: 8px 6px calc(65px + env(safe-area-inset-bottom, 0px));
+  }
+
+  #grid-container {
+    gap: 4px;
+    margin-bottom: 10px;
+  }
+
+  .tile {
+    min-height: 46px;
     padding: 4px 2px;
+    font-size: clamp(0.62rem, 2.5vw, 0.80rem);
+  }
+
+  .tile[data-long="true"] {
+    font-size: clamp(0.50rem, 2.1vw, 0.66rem);
+    line-height: 1.05;
+  }
+
+  .action-buttons {
+    gap: 5px;
+  }
+
+  .action-buttons .btn {
+    min-height: 42px;
+    padding: 8px 4px;
+    font-size: 0.74rem;
+  }
+
+  .action-buttons .btn svg {
+    display: none; /* Hide icon on 320px to save space for text */
+  }
+
+  .weekly-timer-badge {
+    font-size: 0.68rem;
+    padding: 2px 8px;
+  }
+
+  .category-pill {
+    padding: 8px 10px;
+  }
+
+  .pill-title {
+    font-size: 0.80rem;
+  }
+
+  .pill-items {
+    font-size: 0.72rem;
+  }
+}
+
+/* LANDSCAPE ORIENTATION ON PHONES (max-height: 500px and orientation: landscape) */
+@media (max-height: 500px) and (orientation: landscape) {
+  :root {
+    --header-height: 46px;
+  }
+
+  body {
+    background-attachment: scroll;
+  }
+
+  header {
+    padding: 0 max(12px, env(safe-area-inset-left, 12px));
+  }
+
+  #game-container {
+    padding: 6px 12px calc(45px + env(safe-area-inset-bottom, 0px));
+    max-width: 600px;
+  }
+
+  .game-meta {
+    margin-bottom: 6px;
+  }
+
+  #puzzle-title-display {
+    font-size: 0.82rem;
+    display: inline-block;
+    margin-right: 8px;
+  }
+
+  .weekly-timer-badge {
+    display: inline-flex;
+    margin-top: 0;
+    padding: 2px 8px;
+    font-size: 0.68rem;
+  }
+
+  #game-instructions {
+    display: none; /* Conserve vertical space in short landscape */
+  }
+
+  #grid-container {
+    gap: 5px;
+    margin-bottom: 8px;
+  }
+
+  .tile {
+    height: 42px;
+    min-height: 38px;
+    font-size: 0.76rem;
+    padding: 2px 4px;
+  }
+
+  .tile[data-long="true"] {
+    font-size: 0.66rem;
+  }
+
+  .solved-banner {
+    padding: 6px 8px;
+    margin-bottom: 4px;
+  }
+
+  .banner-category-name {
+    font-size: 0.80rem;
+    margin-bottom: 1px;
+  }
+
+  .banner-category-words {
+    font-size: 0.72rem;
+  }
+
+  .banner-fact-toggle, .banner-fact-text {
+    display: none; /* Keep clean in short landscape */
+  }
+
+  .mistakes-container {
+    margin-bottom: 8px;
+    gap: 8px;
+  }
+
+  .mistakes-label {
+    font-size: 0.78rem;
+  }
+
+  .dot {
+    width: 9px;
+    height: 9px;
   }
 
   .action-buttons {
     gap: 8px;
   }
 
-  .btn {
-    padding: 10px 14px;
-    font-size: 0.82rem;
+  .action-buttons .btn {
+    min-height: 38px;
+    padding: 6px 14px;
+    font-size: 0.78rem;
+  }
+
+  .view-photo-btn {
+    position: static;
+    margin: 10px auto 16px;
+    display: flex;
+    width: fit-content;
+    padding: 5px 12px;
+    font-size: 0.68rem;
   }
 
   .modal-card {
-    max-height: 90vh;
+    max-height: 92dvh;
+  }
+
+  .modal-header {
+    padding: 8px 14px;
   }
 
   .modal-body {
-    padding: 14px;
+    padding: 10px 14px 16px;
   }
+}
+
+/* ACCESSIBILITY: PREFERS-REDUCED-MOTION */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .tile.shake,
+  .tile.clearing,
+  .solved-banner {
+    animation: none !important;
+  }
+}
+
+/* ACCESSIBILITY: FOCUS-VISIBLE INDICATORS */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
 }

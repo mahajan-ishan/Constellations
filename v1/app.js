@@ -240,7 +240,9 @@
       tile.setAttribute('aria-label', word);
       tile.setAttribute('role', 'gridcell');
 
-      if (word.length > 9) {
+      if (word.length > 13 || word.split(' ').length > 2) {
+        tile.setAttribute('data-xlong', 'true');
+      } else if (word.length > 8 || word.includes(' ')) {
         tile.setAttribute('data-long', 'true');
       }
 
