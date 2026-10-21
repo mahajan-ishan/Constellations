@@ -1,0 +1,14 @@
+# Dependencies & OS files
+.DS_Store
+Thumbs.db
+
+# Archives & Backups
+*.zip
+*_backup*
+*backup*
+copy.html
+styles_original.css
+Cosmic_Connections_*
+
+# Spreadsheets / raw drafts
+*.xlsx
