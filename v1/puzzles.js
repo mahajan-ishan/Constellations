@@ -217,8 +217,9 @@ function getPuzzleById(id) {
 }
 
 /* ── Weekly IST unlock system ───────────────────────────── */
-// Puzzle #1 goes live on this Sunday 00:00 IST (change to your first launch date)
-const LAUNCH_SUNDAY_IST = new Date('2026-10-26T00:00:00+05:30');
+// Puzzle #1 goes live on Sunday, October 25, 2026 at 00:00 IST.
+// Each subsequent puzzle unlocks every 7 days at Sunday 00:00 IST.
+const LAUNCH_SUNDAY_IST = new Date('2026-10-25T00:00:00+05:30');
 
 function getISTWeeksSinceLaunch() {
   const IST_OFFSET_MS = (5 * 60 + 30) * 60 * 1000;
