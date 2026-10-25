@@ -16,7 +16,7 @@
     rel="stylesheet">
 
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="styles.css?v=photo_credits_v1">
+  <link rel="stylesheet" href="styles.css?v=photo_caption_v1">
 </head>
 
 <body>
@@ -184,35 +184,21 @@
       <div class="photo-viewer-header">
         <div class="photo-viewer-title-group">
           <div class="photo-viewer-heading">ARIES Observatory, Nainital</div>
-          <span class="photo-scroll-hint">↕ Scroll for photo &amp; credits</span>
+          <span class="photo-scroll-hint">↕ Scroll for photo &amp; caption</span>
         </div>
         <button class="modal-close-btn photo-viewer-close-btn" data-close="photo-viewer-modal"
           aria-label="Close photo viewer">✕</button>
       </div>
       <div class="photo-viewer-body">
-        <div class="photo-frame">
-          <img src="assets/dhruva_observatory_full.jpg" alt="The Milky Way over ARIES Observatory Nainital" class="full-vertical-photo" />
-        </div>
-
-        <!-- Photo Info Card -->
-        <div class="photo-story-card">
-          <div class="photo-info-row">
-            <span class="photo-info-label">Observatory</span>
-            <span class="photo-info-value">Aryabhatta Research Institute of Observational Sciences (ARIES)</span>
+        <figure class="photo-figure">
+          <div class="photo-frame">
+            <img src="assets/dhruva_observatory_full.jpg" alt="The Milky Way over ARIES Observatory Nainital" class="full-vertical-photo" />
           </div>
-          <div class="photo-info-row">
-            <span class="photo-info-label">Location</span>
-            <span class="photo-info-value">Nainital, Uttarakhand, India</span>
-          </div>
-          <div class="photo-info-row">
-            <span class="photo-info-label">Photo by</span>
-            <span class="photo-info-value highlight">Srujan Kulkarni</span>
-          </div>
-          <div class="photo-info-row">
-            <span class="photo-info-label">Context</span>
-            <span class="photo-info-value muted">First astrophoto — taken at the end of a 2-month internship at ARIES.</span>
-          </div>
-        </div>
+          <figcaption class="photo-caption">
+            <span class="photo-caption-location">Aryabhatta Research Institute of Observational Sciences,<br>Nainital, Uttarakhand</span>
+            <strong class="photo-caption-credit">PHOTO BY Srujan Kulkarni</strong>
+          </figcaption>
+        </figure>
       </div>
     </div>
   </div>
